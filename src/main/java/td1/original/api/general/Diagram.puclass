@@ -1,0 +1,74 @@
+@startuml
+
+package original.api.general {
+
+    interface Product {
+        weight(): double
+        price(): double
+    }
+
+    interface FoodProduct extends FoodConstituent, Product{
+       calories() : double
+    }
+    interface FoodConstituent{
+        calories() : double
+    }
+    enum SauceType {
+        BURGER, BARBECUE, BEARNAISE
+    }
+
+    enum MeatType {
+        BEEF, WHITEFISH
+        + price(): double
+    }
+
+    class Cheddar implements FoodProduct {
+        - weight: double
+        - BASE_PRICE: double = 4
+        + this(weight: double)
+        + weight(): double
+        + price(): double
+    }
+
+    class DeepFriedOnions implements FoodProduct {
+        - weight: double
+        - BASE_PRICE: double = 1.5
+        + this(weight: double)
+        + weight(): double
+        + price(): double
+    }
+
+    class Tomato implements FoodProduct {
+        - weight: double
+        - BASE_PRICE: double = 0.5
+        + this(weight: double)
+        + weight(): double
+        + price(): double
+    }
+
+    class Sauce implements FoodProduct {
+        - weight: double
+        - {static} BASE_PRICE: double = 1
+        + this(type: SauceType, weight: double)
+        + weight(): double
+        + price(): double
+    }
+    Sauce *--> "-type" SauceType
+
+    class Meat implements Product {
+        - weight: double
+        + this(type: MeatType, weight: double)
+        + weight(): double
+        + price(): double
+    }
+    Meat *--> "-type" MeatType
+
+    class Burger implements FoodProduct {
+        ~ name: string
+        + this(name: string, items: List<Product>)
+        + weight(): double
+        + price(): double
+    }
+    Burger *-> "~items *" Product
+}
+@enduml
